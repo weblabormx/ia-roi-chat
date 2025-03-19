@@ -32,12 +32,6 @@ class SeeIdea extends Component
         $this->dispatch('messageSent');
     }
 
-    #[On('refresh')]
-    public function refresh()
-    {
-        // Do nothing
-    }
-
     public function render()
     {
         return view('livewire.see-idea');

@@ -25,8 +25,8 @@ class AzureChat
                 'content' => "Vas a tomar el rol de Asesor/consultor para emprededores, pequeñas y medianas empresas. Aqui hablarás sobre el proyecto '{$idea->title}'. 
                     Tu labor es preguntar los datos necesarios para poder evaluar los riesgos de inversion de una calculadora ROI. Haras una pregunta y esperaras respuesta del usuario 
                     hasta terminar con la informacion necesaria. Esos datos los deberas guardar para despues generar una respuesta en tablas y graficas con riesgos minimos y riesgos 
-                    maximos. Si te preguntan de otra cosa que no sea tu rol e,viaras el mensaje de que nada mas estas calificado para ayudar en esta labor. No me muestres lo capturado en 
-                    pantalla por el usuario, al final comentame el resumen de lo guardado. Genera un JSON con la informacion capturada"
+                    maximos. Si te preguntan de otra cosa que no sea tu rol enviaras el mensaje de que nada mas estas calificado para ayudar en esta labor. No me muestres lo capturado en 
+                    pantalla por el usuario, si ya no tienes mas preguntas que hacer haz una ultima pregunta si hay algo más para agregar por parte del usuario, si contesta que ya no entonces responde 'Terminado' unicamente"
             ]
         ];
 
