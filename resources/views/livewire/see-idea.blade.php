@@ -1,8 +1,8 @@
 <div class="max-w-5xl mx-auto relative h-full">
-    <div class="space-y-4">
+    <div class="space-y-4 overflow-y-auto overflow-x-hidden pr-4" style="height: calc(100vh - 280px)">
         @foreach($idea->messages()->with(['idea', 'idea.user'])->get() as $message)
             @if($message->role == 'user')
-                <div class="bg-gray-700 p-4 my-4 rounded-lg">
+                <div class="bg-gray-500 p-4 my-4 rounded-lg">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
@@ -20,6 +20,10 @@
                         <p>{{ $message->message }}</p>
                     </div>
                 </div>
+            @elseif($message->role == 'error')
+                <div class="text-red-300 text-sm">
+                    {{ $message->message }}
+                </div>
             @else
                 <div>{{ $message->message }}</div>
             @endif
@@ -27,7 +31,7 @@
     </div>
     <div class="bg-gray-700 p-8 absolute" style="bottom: 0; left:0; right: 0">
         <form wire:submit="sendMessage" class="space-y-4"> 
-            <x-textarea label="Message" placeholder="Tell us more information" wire:model="message" />
+            <x-input label="Message" placeholder="Tell us more information" wire:model="message" />
             <x-button white label="Send Message" type="submit" full />
         </form>
     </div>
