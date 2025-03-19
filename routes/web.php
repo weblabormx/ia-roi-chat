@@ -11,6 +11,7 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', Livewire\NewIdea::class)->name('dashboard');
     Route::get('ideas/{idea}', Livewire\SeeIdea::class)->name('see-idea');
+    Route::get('ideas/{idea}/live_meeting', Livewire\LiveMeeting::class)->name('meeting');
 });
 
 Route::middleware(['auth'])->group(function () {

@@ -5,9 +5,9 @@ namespace App\Livewire;
 use App\Models\Idea;
 use Livewire\Component;
 
-class SeeIdea extends Component
+class LiveMeeting extends Component
 {
-    public $idea, $message;
+    public $idea, $meeting, $message;
     public $rules = [
         'message' => 'required|min:4'
     ];
@@ -15,15 +15,16 @@ class SeeIdea extends Component
     public function mount(Idea $idea)
     {
         $this->idea = $idea;
-        if($idea->meetings()->where('is_finished', true)->count() == 0) {
-            return redirect('ideas/'.$idea->id.'/live_meeting');
+        $this->meeting = $idea->meetings()->where('is_finished', false)->first();
+        if(!is_object($this->meeting)) {
+            abort(404);
         }
     }
 
     public function sendMessage()
     {
         $this->validate();
-        $this->idea->messages()->create([
+        $this->meeting->messages()->create([
             'message' => $this->message,
             'role' => 'user'
         ]);
@@ -34,6 +35,6 @@ class SeeIdea extends Component
 
     public function render()
     {
-        return view('livewire.see-idea');
+        return view('livewire.live-meeting');
     }
 }

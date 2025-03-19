@@ -3,7 +3,7 @@
 namespace App\Classes;
 
 use Illuminate\Support\Facades\Http;
-use App\Models\Idea;
+use App\Models\Meeting;
 
 class AzureChat
 {
@@ -16,7 +16,7 @@ class AzureChat
         $this->apiKey = env('AZURE_OPENAI_API_KEY'); 
     }
 
-    public function sendMessage(Idea $idea)
+    public function sendMessage(Meeting $meeting)
     {
         // Instrucciones iniciales del sistema
         $messages = [
@@ -41,7 +41,7 @@ Tu objetivo es obtener una visión completa y clara de los costos, ingresos y ri
         ];
 
         // Recuperar mensajes previos para mantener el contexto
-        $messages = array_merge($messages, $idea->messages()
+        $messages = array_merge($messages, $meeting->messages()
             ->orderBy('created_at')
             ->whereNotIn('role', ['error'])
             ->get()
@@ -61,7 +61,7 @@ Tu objetivo es obtener una visión completa y clara de los costos, ingresos y ri
         ]);
 
         if (!$response->successful()) {
-            $idea->messages()->create([
+            $meeting->messages()->create([
                 'message' => $response->json()['error']['message'] ?? 'Error desconocido',
                 'role' => 'error'
             ]);
@@ -69,7 +69,7 @@ Tu objetivo es obtener una visión completa y clara de los costos, ingresos y ri
         }
         // Obtener la respuesta de la IA
         $response = $response->json('choices.0.message.content') ?? null;
-        $idea->messages()->create([
+        $meeting->messages()->create([
             'message' => $response,
             'role' => 'assistant'
         ]);

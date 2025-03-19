@@ -10,7 +10,7 @@ class MeetingMessageObserver
     public function created(MeetingMessage $meeting_message)
     {
         if($meeting_message->role == 'user') {
-            SendMessage::dispatch($meeting_message->idea);
+            SendMessage::dispatch($meeting_message->meeting);
         }
     }
 }

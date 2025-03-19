@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Classes\AzureChat;
-use App\Models\Idea;
+use App\Models\Meeting;
 use Illuminate\Contracts\Broadcasting\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -12,16 +12,16 @@ class SendMessage implements ShouldQueue, ShouldBeUnique
 {
     use Queueable;
 
-    public function __construct(public Idea $idea) {}
+    public function __construct(public Meeting $meeting) {}
 
     public function handle(): void
     {
         $azureChat = new AzureChat();
-        $azureChat->sendMessage($this->idea);
+        $azureChat->sendMessage($this->meeting);
     }
 
     public function uniqueId(): string
     {
-        return $this->idea->id;
+        return $this->meeting->id;
     }
 }

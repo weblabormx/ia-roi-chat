@@ -18,7 +18,8 @@ class NewIdea extends Component
         $idea = auth()->user()->ideas()->create([
             'title' => $this->name
         ]);
-        $idea->messages()->create([
+        $meeting = $idea->meetings()->create();
+        $meeting->messages()->create([
             'message' => $this->message,
             'role' => 'user'
         ]);
