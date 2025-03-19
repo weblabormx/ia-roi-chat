@@ -12,8 +12,9 @@
             </a>
 
             <flux:navlist variant="outline" class="relative">
-                <x-icon name="pencil-square" class="w-5 h-5 absolute hover:text-gray-200 cursor-pointer" style="top: 0; right: 0" />
-
+                <a href="/dashboard" class="absolute" style="top: 0; right: 0">
+                    <x-icon name="pencil-square" class="w-5 h-5 hover:text-gray-200" />
+                </a>
                 <flux:navlist.group :heading="__('Ideas')" class="grid">
                     <flux:navlist.item :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 </flux:navlist.group>
