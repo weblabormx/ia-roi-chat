@@ -16,8 +16,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-4">
-                        <p>{{ $message->message }}</p>
+                    <div class="mt-4 space-y-4">
+                        {!! Str::markdown($message->message) !!}
                     </div>
                 </div>
             @elseif($message->role == 'error')
@@ -25,7 +25,9 @@
                     {{ $message->message }}
                 </div>
             @else
-                <div>{{ $message->message }}</div>
+                <div class="space-y-4">
+                    {!! Str::markdown($message->message) !!}
+                </div>
             @endif
         @endforeach
     </div>
