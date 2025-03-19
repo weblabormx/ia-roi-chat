@@ -16,7 +16,13 @@
                     <x-icon name="pencil-square" class="w-5 h-5 hover:text-gray-200" />
                 </a>
                 <flux:navlist.group :heading="__('Ideas')" class="grid">
-                    <flux:navlist.item :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    @foreach(auth()->user()->ideas()->get() as $idea)
+                        @php
+                            $url = route('see-idea', ['idea' => $idea->id]);
+                            $currentUrl = url()->current();
+                        @endphp
+                        <flux:navlist.item :href="$url" :current="$currentUrl === $url" wire:navigate>{{ $idea->title }}</flux:navlist.item>
+                    @endforeach
                 </flux:navlist.group>
             </flux:navlist>
 
