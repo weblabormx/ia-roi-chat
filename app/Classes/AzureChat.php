@@ -23,42 +23,58 @@ class AzureChat
             'Authorization' => 'Bearer ' . $this->apiKey,
             'Content-Type' => 'application/json',
         ])->post("{$this->baseUrl}/threads", []);
+        dd($response->body());
 
         if ($response->successful()) {
-            $data = $response->json();
-            $idea->thread_id = $data['id'];
-            $idea->save();
-            return $idea->thread_id;
+            return $response->json()['id'];
         }
 
         return null;
     }
 
-    public function sendMessage(Idea $idea, string $message)
+    public function sendMessage(Idea $idea, string $message, string $role = 'user')
     {
         if (!$idea->thread_id) {
-            $this->createThread($idea);
+            return 'Thread no encontrado.';
         }
 
-        Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->apiKey,
             'Content-Type' => 'application/json',
         ])->post("{$this->baseUrl}/threads/{$idea->thread_id}/messages", [
-            'role' => 'user',
+            'role' => $role,
             'content' => $message,
         ]);
+
+        if (!$response->successful()) {
+            return 'Error al enviar el mensaje.';
+        }
+    
+        if ($role === 'user') {
+            return $this->getAIResponse($idea);
+        }
+    
+        return null;
+    }
+
+    public function getAIResponse(Idea $idea)
+    {
+        if (!$idea->thread_id) {
+            return 'Thread no encontrado.';
+        }
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->apiKey,
             'Content-Type' => 'application/json',
         ])->post("{$this->baseUrl}/threads/{$idea->thread_id}/run", [
-            'model' => 'gpt-4', 
+            'model' => 'gpt-4',
         ]);
 
         if ($response->successful()) {
             return $response->json()['choices'][0]['message']['content'] ?? 'No response';
         }
 
-        return 'Error al procesar la solicitud.';
+        return 'Error en la respuesta de la IA.';
     }
+
 }
