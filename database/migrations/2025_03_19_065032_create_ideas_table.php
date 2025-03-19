@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('thread_id')->nullable();
+            $table->integer('user_id')->index();
             $table->timestamps();
         });
     }
