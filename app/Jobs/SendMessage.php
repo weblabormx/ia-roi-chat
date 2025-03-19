@@ -3,23 +3,25 @@
 namespace App\Jobs;
 
 use App\Classes\AzureChat;
-use App\Models\IdeaMessage;
+use App\Models\Idea;
+use Illuminate\Contracts\Broadcasting\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
-class SendMessage implements ShouldQueue
+class SendMessage implements ShouldQueue, ShouldBeUnique
 {
     use Queueable;
 
-    public function __construct(public IdeaMessage $message) {}
+    public function __construct(public Idea $idea) {}
 
     public function handle(): void
     {
         $azureChat = new AzureChat();
-        $response = $azureChat->sendMessage($this->message->idea, $this->message->message);
-        $this->message->idea->create([
-            'message' => $response,
-            'sent_by_user' => false
-        ]);
+        $azureChat->sendMessage($this->idea);
+    }
+
+    public function uniqueId(): string
+    {
+        return $this->idea->id;
     }
 }

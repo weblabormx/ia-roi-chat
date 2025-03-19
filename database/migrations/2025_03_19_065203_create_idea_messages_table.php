@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('idea_messages', function (Blueprint $table) {
             $table->id();
             $table->integer('idea_id')->index();
-            $table->boolean('sent_by_user')->default(false);
+            $table->string('role');
             $table->text('message');
             $table->timestamps();
         });

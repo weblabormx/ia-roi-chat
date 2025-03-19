@@ -20,10 +20,11 @@ class NewIdea extends Component
         ]);
         $idea->messages()->create([
             'message' => $this->message,
-            'sent_by_user' => true
+            'role' => 'user'
         ]);
         return redirect('ideas/'.$idea->id);
     }
+    
     public function render()
     {
         return view('livewire.new-idea');

@@ -1,7 +1,7 @@
 <div class="max-w-5xl mx-auto relative h-full">
     <div class="space-y-4">
         @foreach($idea->messages()->with(['idea', 'idea.user'])->get() as $message)
-            @if($message->sent_by_user)
+            @if($message->role == 'user')
                 <div class="bg-gray-700 p-4 my-4 rounded-lg">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">

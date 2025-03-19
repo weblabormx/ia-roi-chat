@@ -22,7 +22,7 @@ class SeeIdea extends Component
         $this->validate();
         $this->idea->messages()->create([
             'message' => $this->message,
-            'sent_by_user' => true
+            'role' => 'user'
         ]);
         $this->message = '';
     }

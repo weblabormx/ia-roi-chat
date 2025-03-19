@@ -9,6 +9,8 @@ class IdeaMessageObserver
 {
     public function created(IdeaMessage $ideaMessage)
     {
-        SendMessage::dispatch($ideaMessage);
+        if($ideaMessage->role == 'user') {
+            SendMessage::dispatch($ideaMessage->idea);
+        }
     }
 }
