@@ -1,4 +1,11 @@
 <div class="max-w-5xl mx-auto relative h-full">
+    @isset($meeting->resume)
+        <h2 class="text-lg">Resume</h2>
+        <div class="space-y-4 bg-gray-100 p-4 mb-6 text-black font-light">
+            {!! Str::markdown($meeting->resume) !!}
+        </div>
+    @endisset
+    <h2 class="text-lg">Messages</h2>
     <div class="space-y-4 pr-4" >
         @foreach($meeting->messages()->get() as $message)
             @if($message->role == 'user')

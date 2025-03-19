@@ -40,7 +40,6 @@ Tu objetivo es obtener una visión completa y clara de los costos, ingresos y ri
             ]
         ];
 
-        // Recuperar mensajes previos para mantener el contexto
         $messages = array_merge($messages, $meeting->messages()
             ->orderBy('created_at')
             ->whereNotIn('role', ['error'])
@@ -52,14 +51,7 @@ Tu objetivo es obtener una visión completa y clara de los costos, ingresos y ri
             ->toArray()
         );
 
-        // Enviar la solicitud a Azure OpenAI
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'api-key' => $this->apiKey,
-        ])->post($this->baseUrl, [
-            'messages' => $messages,
-        ]);
-
+        $response = $this->callApi($messages);
         if (!$response->successful()) {
             $meeting->messages()->create([
                 'message' => $response->json()['error']['message'] ?? 'Error desconocido',
@@ -67,7 +59,7 @@ Tu objetivo es obtener una visión completa y clara de los costos, ingresos y ri
             ]);
             return;
         }
-        // Obtener la respuesta de la IA
+
         $response = $response->json('choices.0.message.content') ?? null;
         $meeting->messages()->create([
             'message' => $response,
@@ -75,4 +67,13 @@ Tu objetivo es obtener una visión completa y clara de los costos, ingresos y ri
         ]);
     }
 
+    public function callApi($messages)
+    {
+        return Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'api-key' => $this->apiKey,
+        ])->post($this->baseUrl, [
+            'messages' => $messages,
+        ]);
+    }
 }
