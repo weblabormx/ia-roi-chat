@@ -3,10 +3,13 @@
 namespace App\Livewire;
 
 use App\Models\Idea;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class SeeIdea extends Component
 {
+    protected $listeners = ['refreshComponent' => '$refresh'];
+    
     public $idea, $message;
     public $rules = [
         'message' => 'required|min:4'
@@ -25,6 +28,14 @@ class SeeIdea extends Component
             'role' => 'user'
         ]);
         $this->message = '';
+
+        $this->dispatch('messageSent');
+    }
+
+    #[On('refresh')]
+    public function refresh()
+    {
+        // Do nothing
     }
 
     public function render()

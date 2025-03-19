@@ -1,5 +1,5 @@
 <div class="max-w-5xl mx-auto relative h-full">
-    <div class="space-y-4 overflow-y-auto overflow-x-hidden pr-4" style="height: calc(100vh - 280px)">
+    <div id="messagesContainer" class="space-y-4 overflow-y-auto overflow-x-hidden pr-4" style="height: calc(100vh - 280px)">
         @foreach($idea->messages()->with(['idea', 'idea.user'])->get() as $message)
             @if($message->role == 'user')
                 <div class="bg-gray-500 p-4 my-4 rounded-lg">
@@ -36,3 +36,40 @@
         </form>
     </div>
 </div>
+
+<script>
+    function scrollToBottom() {
+        let container = document.getElementById('messagesContainer');
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        scrollToBottom();
+    });
+</script>
+@script
+    <script>
+        function scrollToBottom() {
+            let container = document.getElementById('messagesContainer');
+            if (container) {
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+        $wire.on('messageSent', () => {
+            console.log('Entra');
+            $wire.dispatch('refresh');
+            setTimeout(() => {
+                scrollToBottom();
+            }, 1000);
+            setTimeout(() => {
+                console.log('Entra2');
+                $wire.dispatch('refresh');
+            }, 5000);
+            setTimeout(() => {
+                scrollToBottom();
+            }, 6000);
+        });
+    </script>
+@endscript
