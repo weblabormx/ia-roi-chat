@@ -16,4 +16,9 @@ class Idea extends Model
     {
         return $this->hasMany(IdeaMessage::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
