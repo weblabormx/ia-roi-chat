@@ -40,6 +40,15 @@ Tu objetivo es obtener una visión completa y clara de los costos, ingresos y ri
             ]
         ];
 
+        $meetings = $meeting->idea->meetings()->where('id', '!=', $meeting->id)->oldest()->get();
+        $messages = array_merge($messages, $meetings
+            ->map(fn($meet) => [
+                'role' => 'system',
+                'content' => "Resume of meeting from {$meet->created_at}: ".$meet->resume
+            ])
+            ->toArray()
+        );
+
         $messages = array_merge($messages, $meeting->messages()
             ->orderBy('created_at')
             ->whereNotIn('role', ['error'])

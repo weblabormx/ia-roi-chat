@@ -9,7 +9,7 @@ class LiveMeeting extends Component
 {
     public $idea, $meeting, $message;
     public $rules = [
-        'message' => 'required|min:4'
+        'message' => 'required|min:2'
     ];
 
     public function mount(Idea $idea)

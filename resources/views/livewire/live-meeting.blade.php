@@ -40,7 +40,7 @@
         </div>
     @else
         <div class="bg-gray-700 p-8 absolute" style="bottom: 0; left:0; right: 0">
-            <x-button white label="Finish Meeting" href="/ideas/{{$meeting->id}}" full />
+            <x-button white label="Finish Meeting" href="/ideas/{{$meeting->idea_id}}" full />
         </div>
     @endif
 </div>
