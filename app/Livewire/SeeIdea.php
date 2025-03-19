@@ -7,10 +7,7 @@ use Livewire\Component;
 
 class SeeIdea extends Component
 {
-    public $idea, $message;
-    public $rules = [
-        'message' => 'required|min:4'
-    ];
+    public $idea;
 
     public function mount(Idea $idea)
     {
@@ -20,16 +17,12 @@ class SeeIdea extends Component
         }
     }
 
-    public function sendMessage()
+    public function newMeeting()
     {
-        $this->validate();
-        $this->idea->messages()->create([
-            'message' => $this->message,
-            'role' => 'user'
+        $this->idea->meetings()->create([
+            'is_finished' => false
         ]);
-        $this->message = '';
-
-        $this->dispatch('messageSent');
+        return redirect('ideas/'.$this->idea->id.'/live_meeting');
     }
 
     public function render()

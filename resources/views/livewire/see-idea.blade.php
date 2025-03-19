@@ -1,7 +1,12 @@
 <div>
-    <h2 class="text-lg">Meetings</h2>
+    @if($idea->meetings()->where('is_finished', false)->count() == 0)
+        <x-button gray label="New meeting" wire:click="newMeeting" class="float-right" />
+    @else
+        <x-button green label="Go to open meeting" href="/ideas/{{ $idea->id }}/live_meeting" class="float-right" />
+    @endif
+    <h2 class="text-lg mb-4">Meetings</h2>
     <div class="px-4 sm:px-6 lg:px-8 bg-white">
-        <div class="mt-8 flow-root">
+        <div class="flow-root">
             <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                     <table class="min-w-full divide-y divide-gray-300">
@@ -16,7 +21,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                            @foreach($idea->meetings()->get() as $meeting)
+                            @foreach($idea->meetings()->where('is_finished', 1)->get() as $meeting)
                                 <tr>
                                     <td class="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-0">{{ $meeting->created_at }}</td>
                                     <td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">{{ $meeting->title }}</td>
