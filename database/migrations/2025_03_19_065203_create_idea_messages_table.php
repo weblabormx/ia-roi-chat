@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('idea_messages', function (Blueprint $table) {
+        Schema::create('meeting_messages', function (Blueprint $table) {
             $table->id();
-            $table->integer('idea_id')->index();
+            $table->integer('meeting_id')->index();
             $table->string('role');
             $table->text('message');
             $table->timestamps();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('idea_messages');
+        Schema::dropIfExists('meeting_messages');
     }
 };

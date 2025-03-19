@@ -2,7 +2,7 @@
     <form wire:submit="save" class="space-y-4"> 
         <h2 class="text-lg">¿Whats your idea or plan?</h2>
         <x-input label="Name" wire:model="name" />
-        <x-textarea label="Description" placeholder="Tell us about your idea" wire:model="message" />
+        <x-input label="Description" placeholder="Tell us about your idea" wire:model="message" />
         <x-button white label="Execute" type="submit" full />
     </form>
 </div>

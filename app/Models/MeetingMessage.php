@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Observers\IdeaMessageObserver;
+use App\Observers\MeetingMessageObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 
-#[ObservedBy(IdeaMessageObserver::class)]
-class IdeaMessage extends Model
+#[ObservedBy(MeetingMessageObserver::class)]
+class MeetingMessage extends Model
 {
     protected $guarded = [];
 

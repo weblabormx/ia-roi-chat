@@ -15,11 +15,6 @@ class Idea extends Model
      * Relationships
      */
 
-    public function messages()
-    {
-        return $this->hasMany(IdeaMessage::class);
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class);
