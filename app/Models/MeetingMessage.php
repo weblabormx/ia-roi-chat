@@ -15,8 +15,8 @@ class MeetingMessage extends Model
      * Relationships
      */
 
-    public function idea()
+    public function meeting()
     {
-        return $this->belongsTo(Idea::class);
+        return $this->belongsTo(Meeting::class);
     }
 }
