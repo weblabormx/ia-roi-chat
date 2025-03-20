@@ -11,6 +11,7 @@ class MeetingObserver
     {
         if($meeting->is_finished && is_null($meeting->resume)) {
             FinishMeeting::dispatch($meeting);
+            $meeting->idea->update(['analysis' => null]);
         }
     }
 }
