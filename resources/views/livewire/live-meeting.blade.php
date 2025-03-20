@@ -43,9 +43,9 @@
                     <div id="inputContainer" class="flex-1">
                         <x-input label="Message" placeholder="Tell us more information" wire:model="message" />
                     </div>
-                    <div id="timerVisualizerContainer" style="display: none;">
-                        <span id="timer" class="text-white"></span>
-                        <canvas id="visualizer" class="w-full h-12 bg-gray-800 mt-4"></canvas>
+                    <div id="timerVisualizerContainer" class="mt-5" style="display: none;">
+                        <span id="timer" class="text-white w-32 pt-2"></span>
+                        <canvas id="visualizer" class="w-full h-10 bg-gray-800"></canvas>
                     </div>
                 </div>
                 
@@ -68,8 +68,11 @@
     }
     document.addEventListener("DOMContentLoaded", function () {
         let recordButton = document.getElementById("recordButton");
+        let elementWithPoll = document.querySelector("[wire\\:poll]"); // Suponiendo que tienes un elemento con wire:poll
         let timerElement = document.getElementById("timer");
         let visualizer = document.getElementById("visualizer");
+        let inputContainer = document.getElementById("inputContainer");
+        let timerVisualizerContainer = document.getElementById("timerVisualizerContainer"); // Contenedor del timer + visualizer
         let mediaRecorder;
         let audioChunks = [];
         let timer;
@@ -77,7 +80,7 @@
 
         // Función para pedir acceso al micrófono
         async function requestMicrophoneAccess() {
-            try {
+            try {   
                 await navigator.mediaDevices.getUserMedia({ audio: true });
                 console.log("Acceso al micrófono concedido");
             } catch (error) {
@@ -102,6 +105,9 @@
         async function startRecording() {
             try {
                 let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                if (elementWithPoll) {
+                    elementWithPoll.removeAttribute("wire:poll");
+                }
 
                 mediaRecorder = new MediaRecorder(stream);
                 let audioContext = new AudioContext();
@@ -150,7 +156,12 @@
                     audioChunks = [];
                 };
 
+                // Comienza a grabar
                 mediaRecorder.start();
+
+                // Muestra el visualizer y el timer, y oculta el input
+                inputContainer.style.display = "none"; // Oculta el input
+                timerVisualizerContainer.style.display = "flex";  // Muestra el timer + visualizer
                 startTimer();
             } catch (error) {
                 console.error("Error al acceder al micrófono:", error);
@@ -161,6 +172,14 @@
         function stopRecording() {
             if (mediaRecorder && mediaRecorder.state !== "inactive") {
                 mediaRecorder.stop();
+
+                if (elementWithPoll) {
+                    elementWithPoll.setAttribute("wire:poll", "1000ms"); // Ejemplo de valor para el intervalo
+                }
+
+                // Restaura el input, el timer y el visualizer
+                inputContainer.style.display = "block"; // Muestra el input
+                timerVisualizerContainer.style.display = "none"; // Oculta el timer + visualizer
             }
         }
 

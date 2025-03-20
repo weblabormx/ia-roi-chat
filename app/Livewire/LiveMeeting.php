@@ -5,6 +5,8 @@ namespace App\Livewire;
 use App\Models\Idea;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class LiveMeeting extends Component
 {
@@ -42,8 +44,36 @@ class LiveMeeting extends Component
             return;
         }
 
-        $path = $this->audioFile->store('public/audio');
-        dd($path);
+        $path = $this->audioFile->store('audio');
+
+        // Aquí tomamos la clave y el endpoint de las variables de entorno
+        $subscriptionKey = env('AZURE_OPENAI_API_KEY');
+        $endpoint = env('AZURE_SPEECH_TO_TEXT_ENDPOINT');
+
+        // Abrimos el archivo de audio para enviarlo en el cuerpo de la solicitud
+        $real_path = Storage::path($path);
+        $audioContent = fopen($real_path, 'r');
+
+        // Enviar la solicitud POST a la API de Azure Speech-to-Text
+        $response = Http::withHeaders([
+            'Ocp-Apim-Subscription-Key' => $subscriptionKey,
+            'Accept' => 'application/json',
+        ])->attach(
+            'audio', $audioContent, 'audio.wav'
+        )->post($endpoint, [
+            'definition' => json_encode([
+                'locales' => ['es-MX'],
+                'profanityFilterMode' => 'Masked',
+                'channels' => [0, 1]
+            ])
+        ]);
+
+        if (!$response->successful()) {
+            return;
+        }
+
+        $text = collect($response->json()['combinedPhrases'])->pluck('text');
+        $this->message = $text;
         $this->audioFile = null;
     }
 
