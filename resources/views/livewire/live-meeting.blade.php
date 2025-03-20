@@ -1,4 +1,4 @@
-<div class="max-w-5xl mx-auto relative h-full">
+<div x-data="liveMeeting" x-init="init()" class="max-w-5xl mx-auto relative h-full">
     <div id="messagesContainer" class="space-y-4 overflow-y-auto overflow-x-hidden pr-4" style="height: calc(100vh - 280px)" wire:poll>
         @foreach($meeting->messages()->get() as $message)
             @if($message->role == 'user')
@@ -31,20 +31,21 @@
             @endif
         @endforeach
     </div>
+    
     @if(!$meeting->is_finished)
         <div class="bg-gray-700 p-8 absolute" style="bottom: 0; left:0; right: 0">
             <form wire:submit="sendMessage" class="space-y-4"> 
                 <div class="flex">
                     <div class="flex items-center justify-center space-x-4 mt-5 mr-2 cursor-pointer">
-                        <button id="recordButton" class="bg-red-500 text-white px-4 py-2 rounded-lg" type="button">
-                            🎤
+                        <button @mousedown="startRecording" @mouseup="stopRecording" class="bg-red-500 text-white px-4 py-2 rounded-lg" type="button">
+                            <span x-text="isRecording ? '🔴' : '🎤'"></span>
                         </button>
                     </div>
-                    <div id="inputContainer" class="flex-1">
+                    <div id="inputContainer" class="flex-1" x-show="!isRecording">
                         <x-input label="Message" placeholder="Tell us more information" wire:model="message" />
                     </div>
-                    <div id="timerVisualizerContainer" class="mt-5" style="display: none;">
-                        <span id="timer" class="text-white w-32 pt-2"></span>
+                    <div id="timerVisualizerContainer" class="mt-5" x-show="isRecording">
+                        <span id="timer" class="text-white w-32 pt-2" x-text="timerText"></span>
                         <canvas id="visualizer" class="w-full h-10 bg-gray-800"></canvas>
                     </div>
                 </div>
@@ -60,148 +61,110 @@
 </div>
 
 <script>
-    function scrollToBottom() {
-        let container = document.getElementById('messagesContainer');
-        if (container) {
-            container.scrollTop = container.scrollHeight;
-        }
-    }
-    document.addEventListener("DOMContentLoaded", function () {
-        let recordButton = document.getElementById("recordButton");
-        let elementWithPoll = document.querySelector("[wire\\:poll]");
-        let timerElement = document.getElementById("timer");
-        let visualizer = document.getElementById("visualizer");
-        let inputContainer = document.getElementById("inputContainer");
-        let timerVisualizerContainer = document.getElementById("timerVisualizerContainer"); // Contenedor del timer + visualizer
-        let mediaRecorder;
-        let audioChunks = [];
-        let timer;
-        let seconds = 0;
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('liveMeeting', () => ({
+            isRecording: false,
+            timerText: '',
+            mediaRecorder: null,
+            audioChunks: [],
+            timer: null,
+            seconds: 0,
 
-        // Función para pedir acceso al micrófono
-        async function requestMicrophoneAccess() {
-            try {   
-                await navigator.mediaDevices.getUserMedia({ audio: true });
-                console.log("Acceso al micrófono concedido");
-            } catch (error) {
-                console.error("Acceso al micrófono denegado", error);
-                alert("Necesitas permitir el acceso al micrófono para grabar audio.");
-            }
-        }
+            init() {
+                this.requestMicrophoneAccess();
+                this.setupHooks();
+            },
 
-        function startTimer() {
-            timer = setInterval(() => {
-                seconds++;
-                timerElement.innerText = `⏳ ${seconds} sec`;
-            }, 1000);
-        }
+            requestMicrophoneAccess() {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(() => console.log("Micrófono accesible"))
+                    .catch(() => alert("Necesitas permitir el acceso al micrófono para grabar audio."));
+            },
 
-        function stopTimer() {
-            clearInterval(timer);
-            timerElement.innerText = "";
-            seconds = 0;
-        }
+            setupHooks() {
+                Livewire.hook('request', this.scrollToBottom);
+                Livewire.hook('component.init', this.scrollToBottom);
+            },
 
-        async function startRecording() {
-            try {
+            startTimer() {
+                this.timer = setInterval(() => {
+                    this.seconds++;
+                    this.timerText = `⏳ ${this.seconds} sec`;
+                }, 1000);
+            },
+
+            stopTimer() {
+                clearInterval(this.timer);
+                this.timerText = '';
+                this.seconds = 0;
+            },
+
+            async startRecording() {
+                this.isRecording = true;
                 let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                if (elementWithPoll) {
-                    elementWithPoll.removeAttribute("wire:poll");
-                }
-                recordButton.textContent = "🔴";
+                this.mediaRecorder = new MediaRecorder(stream);
 
-                mediaRecorder = new MediaRecorder(stream);
                 let audioContext = new AudioContext();
                 let analyser = audioContext.createAnalyser();
                 let source = audioContext.createMediaStreamSource(stream);
                 source.connect(analyser);
 
-                let canvasContext = visualizer.getContext("2d");
+                let canvas = document.getElementById("visualizer");
+                let canvasContext = canvas.getContext("2d");
                 analyser.fftSize = 256;
                 let bufferLength = analyser.frequencyBinCount;
                 let dataArray = new Uint8Array(bufferLength);
 
-                function draw() {
-                    requestAnimationFrame(draw);
+                const drawVisualizer = () => {
+                    requestAnimationFrame(drawVisualizer);
                     analyser.getByteFrequencyData(dataArray);
-                    canvasContext.clearRect(0, 0, visualizer.width, visualizer.height);
+                    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
                     canvasContext.fillStyle = "#4caf50";
-                    let barWidth = (visualizer.width / bufferLength) * 2.5;
+                    let barWidth = (canvas.width / bufferLength) * 2.5;
                     let x = 0;
 
                     for (let i = 0; i < bufferLength; i++) {
                         let barHeight = dataArray[i] / 2;
-                        canvasContext.fillRect(x, visualizer.height - barHeight / 2, barWidth, barHeight);
+                        canvasContext.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight);
                         x += barWidth + 1;
                     }
-                }
-
-                draw();
-
-                mediaRecorder.ondataavailable = event => {
-                    audioChunks.push(event.data);
                 };
 
-                mediaRecorder.onstop = async () => {
-                    stopTimer();
+                drawVisualizer();
+
+                this.mediaRecorder.ondataavailable = event => {
+                    this.audioChunks.push(event.data);
+                };
+
+                this.mediaRecorder.onstop = async () => {
+                    this.stopTimer();
                     stream.getTracks().forEach(track => track.stop());
-
-                    let audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-                    let formData = new FormData();
-                    formData.append("audioFile", audioBlob);
-
+                    
+                    let audioBlob = new Blob(this.audioChunks, { type: "audio/wav" });
                     @this.upload('audioFile', audioBlob, () => {
                         @this.call('saveAudio');
                     });
 
-                    audioChunks = [];
+                    this.audioChunks = [];
                 };
 
-                // Comienza a grabar
-                mediaRecorder.start();
+                this.mediaRecorder.start();
+                this.startTimer();
+            },
 
-                // Muestra el visualizer y el timer, y oculta el input
-                inputContainer.style.display = "none"; // Oculta el input
-                timerVisualizerContainer.style.display = "flex";  // Muestra el timer + visualizer
-                startTimer();
-            } catch (error) {
-                console.error("Error al acceder al micrófono:", error);
-                alert("Error al acceder al micrófono. Asegúrate de haber dado permiso.");
-            }
-        }
-
-        function stopRecording() {
-            if (mediaRecorder && mediaRecorder.state !== "inactive") {
-                mediaRecorder.stop();
-                recordButton.textContent = "🎤";
-
-                if (elementWithPoll) {
-                    elementWithPoll.setAttribute("wire:poll", "1000ms"); // Ejemplo de valor para el intervalo
+            stopRecording() {
+                if (this.mediaRecorder && this.mediaRecorder.state !== "inactive") {
+                    this.mediaRecorder.stop();
+                    this.isRecording = false;
                 }
+            },
 
-                // Restaura el input, el timer y el visualizer
-                inputContainer.style.display = "block"; // Muestra el input
-                timerVisualizerContainer.style.display = "none"; // Oculta el timer + visualizer
-            }
-        }
-
-        // Pedir permiso al cargar la página
-        requestMicrophoneAccess();
-
-        // Eventos de grabación
-        recordButton.addEventListener("mousedown", startRecording);
-        recordButton.addEventListener("mouseup", stopRecording);
+            scrollToBottom() {
+                let container = document.getElementById('messagesContainer');
+                if (container) {
+                    container.scrollTop = container.scrollHeight;
+                }
+            },
+        }));
     });
 </script>
-@script
-    <script>
-        Livewire.hook('request', ({ component, cleanup }) => {
-            scrollToBottom();
-        });
-
-        Livewire.hook('component.init', ({ component, cleanup }) => {
-            scrollToBottom();
-        });
-        
-    </script>
-@endscript
