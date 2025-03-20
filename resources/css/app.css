@@ -66,3 +66,105 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+.markdown {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.markdown h1 {
+    font-size: 2em;
+    border-bottom: 2px solid;
+    padding-bottom: 0.3em;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+.markdown h2 {
+    font-size: 1.75em;
+    border-bottom: 1px solid;
+    padding-bottom: 0.3em;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+.markdown h3 {
+    font-size: 1.5em;
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+}
+
+.markdown p {
+    margin-top: 0.5em;
+    margin-bottom: 1.2em;
+}
+
+.markdown ul, .markdown ol {
+    margin: 1em 0;
+    padding-left: 20px;
+}
+
+.markdown ul {
+    list-style-type: disc;
+}
+
+.markdown ol {
+    list-style-type: decimal;
+}
+
+.markdown li {
+    margin-left: 1em;
+    margin-bottom: 0.4em;
+}
+
+.markdown blockquote {
+    border-left: 4px solid;
+    padding-left: 1em;
+    font-style: italic;
+    margin: 1em 0;
+}
+
+.markdown pre {
+    background: #f6f8fa;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: monospace;
+    font-size: 0.9em;
+    padding: 10px;
+}
+
+.markdown code {
+    background: #f6f8fa;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+    padding: 2px 4px;
+}
+
+.markdown a {
+    text-decoration: none;
+}
+
+.markdown a:hover {
+    text-decoration: underline;
+}
+
+.markdown table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.markdown th, .markdown td {
+    border: 1px solid;
+    padding: 8px;
+    text-align: left;
+}
+
+.markdown thead th {
+    background: #f0f0f0;
+    font-weight: bold;
+    color: #000;
+}

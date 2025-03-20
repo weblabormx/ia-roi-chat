@@ -37,4 +37,8 @@
             </div>
         </div>
     </div>
+    <h2 class="text-lg my-4">Analysis</h2>
+    <div class="bg-gray-100 px-12 text-black markdown p-4">
+        {!! Str::markdown($idea->analysis) !!}
+    </div>
 </div>

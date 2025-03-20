@@ -39,5 +39,7 @@ description: Una descripción corta de 100 caracteres máximo que sintetice lo m
         $response = $response->json('choices.0.message.content') ?? null;
         $data = json_decode($response, true);
         $this->meeting->update($data);
+
+        GenerateAnalysis::dispatch($this->meeting->idea);
     }
 }
