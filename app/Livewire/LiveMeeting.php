@@ -4,10 +4,13 @@ namespace App\Livewire;
 
 use App\Models\Idea;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class LiveMeeting extends Component
 {
-    public $idea, $meeting, $message;
+    use WithFileUploads;
+
+    public $idea, $meeting, $message, $audioFile;
     public $rules = [
         'message' => 'required|min:2'
     ];
@@ -32,6 +35,18 @@ class LiveMeeting extends Component
 
         $this->dispatch('messageSent');
     }
+
+    public function saveAudio()
+    {
+        if (!$this->audioFile) {
+            return;
+        }
+
+        $path = $this->audioFile->store('public/audio');
+        dd($path);
+        $this->audioFile = null;
+    }
+
 
     public function render()
     {
