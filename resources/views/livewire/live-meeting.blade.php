@@ -52,22 +52,14 @@
             container.scrollTop = container.scrollHeight;
         }
     }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        scrollToBottom();
-    });
 </script>
 @script
     <script>
-        function scrollToBottom() {
-            let container = document.getElementById('messagesContainer');
-            if (container) {
-                container.scrollTop = container.scrollHeight;
-            }
-        }
         Livewire.hook('request', ({ component, cleanup }) => {
             scrollToBottom();
         });
-       
+        Livewire.hook('component.init', ({ component, cleanup }) => {
+            scrollToBottom();
+        });
     </script>
 @endscript
