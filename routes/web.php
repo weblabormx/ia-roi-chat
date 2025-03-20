@@ -13,6 +13,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('ideas/{idea}', Livewire\SeeIdea::class)->name('see-idea');
     Route::get('ideas/{idea}/live_meeting', Livewire\LiveMeeting::class)->name('meeting');
     Route::get('meetings/{meeting}', Livewire\SeeMeeting::class)->name('see-meeting');
+    Route::get('prompts', Livewire\Settings::class)->name('dashboard');
 });
 
 Route::middleware(['auth'])->group(function () {
