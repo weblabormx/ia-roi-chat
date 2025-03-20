@@ -72,8 +72,8 @@ class LiveMeeting extends Component
             return;
         }
 
-        $text = collect($response->json()['combinedPhrases'])->pluck('text');
-        $this->message = $text;
+        $text = collect($response->json()['combinedPhrases'])->pluck('text')->implode(' ');
+        $this->message .= $text.' ';
         $this->audioFile = null;
     }
 

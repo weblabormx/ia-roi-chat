@@ -68,7 +68,7 @@
     }
     document.addEventListener("DOMContentLoaded", function () {
         let recordButton = document.getElementById("recordButton");
-        let elementWithPoll = document.querySelector("[wire\\:poll]"); // Suponiendo que tienes un elemento con wire:poll
+        let elementWithPoll = document.querySelector("[wire\\:poll]");
         let timerElement = document.getElementById("timer");
         let visualizer = document.getElementById("visualizer");
         let inputContainer = document.getElementById("inputContainer");
@@ -108,6 +108,7 @@
                 if (elementWithPoll) {
                     elementWithPoll.removeAttribute("wire:poll");
                 }
+                recordButton.textContent = "🔴";
 
                 mediaRecorder = new MediaRecorder(stream);
                 let audioContext = new AudioContext();
@@ -172,6 +173,7 @@
         function stopRecording() {
             if (mediaRecorder && mediaRecorder.state !== "inactive") {
                 mediaRecorder.stop();
+                recordButton.textContent = "🎤";
 
                 if (elementWithPoll) {
                     elementWithPoll.setAttribute("wire:poll", "1000ms"); // Ejemplo de valor para el intervalo
