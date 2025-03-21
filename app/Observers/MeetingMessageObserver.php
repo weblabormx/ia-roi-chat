@@ -11,7 +11,7 @@ class MeetingMessageObserver
     {
         if($meeting_message->role == 'user') {
             SendMessage::dispatch($meeting_message->meeting);
-        } else if($meeting_message->role == 'assistant' && $meeting_message->message == 'TERMINAR') {
+        } else if($meeting_message->role == 'assistant' && $meeting_message->message == 'FINISH') {
             $meeting_message->meeting->update(['is_finished' => true]);
         }
     }
