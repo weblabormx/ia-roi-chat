@@ -14,7 +14,7 @@ class LiveMeeting extends Component
 
     public $idea, $meeting, $message, $audioFile;
     public $rules = [
-        'message' => 'required|min:2'
+        'message' => 'required|min:1'
     ];
 
     public function mount(Idea $idea)
