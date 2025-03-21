@@ -39,6 +39,10 @@
     </div>
     <h2 class="text-lg my-4">Analysis</h2>
     <div class="bg-gray-100 px-12 text-black markdown p-4">
-        {!! Str::markdown($idea->analysis) !!}
+        @isset($idea->analysis)
+            {!! Str::markdown($idea->analysis) !!}
+        @else
+            <p>No analysis yet. Its generating.</p>
+        @endisset
     </div>
 </div>
