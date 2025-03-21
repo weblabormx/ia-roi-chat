@@ -39,9 +39,12 @@
     </div>
     <h2 class="text-lg mt-4 mb-2">Analysis</h2>
     <small class="mb-4 block text-gray-300 text-xs">The generated ROI analysis is performed by AI and may not accurately reflect real results. It is recommended to verify and complement it with additional analysis or expert advice.</small>
-    <div class="bg-gray-100 px-12 text-black markdown p-4">
+    <div class="bg-gray-100 px-12 text-black p-4">
+        
         @isset($idea->analysis)
-            {!! Str::markdown($idea->analysis) !!}
+            <div class="markdown">
+                {!! Str::markdown($idea->analysis) !!}
+            </div>
         @else
             <p>No analysis yet. Its generating.</p>
         @endisset
@@ -49,3 +52,4 @@
     <h2 class="text-lg mt-4 mb-2">Remove data</h2>
     <x-button red full label="Remove all data" wire:click.prevent="removeData" onclick="confirm('Are you sure you want to delete all data? This action cannot be undone.') || event.stopImmediatePropagation()" class="float-right" />
 </div>
+
