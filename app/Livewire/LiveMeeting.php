@@ -77,6 +77,11 @@ class LiveMeeting extends Component
         $this->audioFile = null;
     }
 
+    public function cancel()
+    {
+        $this->meeting->idea->delete();
+        return redirect('dashboard');
+    }
 
     public function render()
     {
