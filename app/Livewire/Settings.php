@@ -12,6 +12,7 @@ class Settings extends Component
         'settings.chat_prompt' => 'required|string',
         'settings.meeting_prompt' => 'required|string',
         'settings.analysis_prompt' => 'required|string',
+        'settings.graphics_prompt' => 'required|string',
     ];
 
     public function mount()

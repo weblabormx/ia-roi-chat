@@ -4,6 +4,7 @@
         <x-textarea label="Chat" wire:model="settings.chat_prompt" />
         <x-textarea label="Meeting Resume" wire:model="settings.meeting_prompt" />
         <x-textarea label="Analysis" wire:model="settings.analysis_prompt" />
+        <x-textarea label="Graphics" wire:model="settings.graphics_prompt" />
         <x-button white label="Update" type="submit" full />
     </form>
 </div>
