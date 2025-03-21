@@ -8,13 +8,19 @@ use App\Models\Setting;
 
 class AzureChat
 {
-    protected string $baseUrl;
+    protected string $baseUrl, $model;
     protected string $apiKey;
 
-    public function __construct()
+    public function __construct($model = "OpenAI")
     {
-        $this->baseUrl = env('AZURE_OPENAI_BASE_URL'); 
-        $this->apiKey = env('AZURE_OPENAI_API_KEY'); 
+        $this->model = $model;
+        if($model == "OpenAI") {
+            $this->baseUrl = env('AZURE_OPENAI_BASE_URL'); 
+            $this->apiKey = env('AZURE_OPENAI_API_KEY'); 
+        } else {
+            $this->baseUrl = env('DEEP_SEEK_BASE_URL');
+            $this->apiKey = env('DEEP_SEEK_API_KEY');
+        }
     }
 
     public function sendMessage(Meeting $meeting)
@@ -65,11 +71,12 @@ class AzureChat
 
     public function callApi($messages)
     {
-        return Http::withHeaders([
+        return Http::timeout(600)->withHeaders([
             'Content-Type' => 'application/json',
             'api-key' => $this->apiKey,
         ])->post($this->baseUrl, [
             'messages' => $messages,
+            'model' => $this->model
         ]);
     }
 }

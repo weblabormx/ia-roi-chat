@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Observers\IdeaObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 #[ObservedBy(IdeaObserver::class)]
 class Idea extends Model
@@ -23,5 +24,14 @@ class Idea extends Model
     public function meetings()
     {
         return $this->hasMany(Meeting::class);
+    }
+
+    /*
+     * Attributes
+     */
+
+    public function getGraphicsAttribute()
+    {
+        return Storage::get('graphics/'.$this->id.'.html');
     }
 }

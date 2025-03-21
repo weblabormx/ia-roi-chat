@@ -34,5 +34,7 @@ class GenerateAnalysis implements ShouldQueue
         $response = $azure->callApi($messages);
         $response = $response->json('choices.0.message.content') ?? null;
         $this->idea->update(['analysis' => $response]);
+
+        GenerateGraphics::dispatch($this->idea);
     }
 }
