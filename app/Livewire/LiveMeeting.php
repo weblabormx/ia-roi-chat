@@ -62,7 +62,7 @@ class LiveMeeting extends Component
             'audio', $audioContent, 'audio.wav'
         )->post($endpoint, [
             'definition' => json_encode([
-                'locales' => ['es-MX'],
+                'locales' => ['en-US'],
                 'profanityFilterMode' => 'Masked',
                 'channels' => [0, 1]
             ])
