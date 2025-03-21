@@ -37,9 +37,11 @@
             </div>
         </div>
     </div>
-    <h2 class="text-lg my-4">Analysis</h2>
+    <h2 class="text-lg mt-4 mb-2">Analysis</h2>
+    <small class="mb-4 block text-gray-300 text-xs">The generated ROI analysis is performed by AI and may not accurately reflect real results. It is recommended to verify and complement it with additional analysis or expert advice.</small>
     <div class="bg-gray-100 px-12 text-black markdown p-4">
         @isset($idea->analysis)
+           
             {!! Str::markdown($idea->analysis) !!}
         @else
             <p>No analysis yet. Its generating.</p>

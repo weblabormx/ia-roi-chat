@@ -5,4 +5,5 @@
         <x-input label="Description" placeholder="Tell us about your idea" wire:model="message" />
         <x-button white label="Execute" type="submit" full />
     </form>
+    <small class="mt-4 block text-gray-300 text-xs">The generated ROI is an estimate made by AI and may not accurately reflect actual results. We recommend verifying and supplementing it with additional analysis or the help of an expert.</small>
 </div>
