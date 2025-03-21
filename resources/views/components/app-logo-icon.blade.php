@@ -1,0 +1,1 @@
+<img src="https://cdn0.iconfinder.com/data/icons/crowd-funding-6/128/roi-512.png" {{ $attributes }}>

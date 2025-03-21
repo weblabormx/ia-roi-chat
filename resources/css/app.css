@@ -1,0 +1,170 @@
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+
+@source "../views";
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@source '../../vendor/wireui/wireui';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-zinc-50: #fafafa;
+    --color-zinc-100: #f5f5f5;
+    --color-zinc-200: #e5e5e5;
+    --color-zinc-300: #d4d4d4;
+    --color-zinc-400: #a3a3a3;
+    --color-zinc-500: #737373;
+    --color-zinc-600: #525252;
+    --color-zinc-700: #404040;
+    --color-zinc-800: #262626;
+    --color-zinc-900: #171717;
+    --color-zinc-950: #0a0a0a;
+
+    --color-accent: var(--color-neutral-800);
+    --color-accent-content: var(--color-neutral-800);
+    --color-accent-foreground: var(--color-white);
+}
+
+@layer theme {
+    .dark {
+        --color-accent: var(--color-white);
+        --color-accent-content: var(--color-white);
+        --color-accent-foreground: var(--color-neutral-800);
+    }
+}
+
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+[data-flux-field] {
+    @apply grid gap-2;
+}
+
+[data-flux-label] {
+    @apply  !mb-0 !leading-tight;
+}
+
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+/* \[:where(&)\]:size-4 {
+    @apply size-4;
+} */
+
+.markdown {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.markdown h1 {
+    font-size: 2em;
+    border-bottom: 2px solid;
+    padding-bottom: 0.3em;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+.markdown h2 {
+    font-size: 1.75em;
+    border-bottom: 1px solid;
+    padding-bottom: 0.3em;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+.markdown h3 {
+    font-size: 1.5em;
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+}
+
+.markdown p {
+    margin-top: 0.5em;
+    margin-bottom: 1.2em;
+}
+
+.markdown ul, .markdown ol {
+    margin: 1em 0;
+    padding-left: 20px;
+}
+
+.markdown ul {
+    list-style-type: disc;
+}
+
+.markdown ol {
+    list-style-type: decimal;
+}
+
+.markdown li {
+    margin-left: 1em;
+    margin-bottom: 0.4em;
+}
+
+.markdown blockquote {
+    border-left: 4px solid;
+    padding-left: 1em;
+    font-style: italic;
+    margin: 1em 0;
+}
+
+.markdown pre {
+    background: #f6f8fa;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: monospace;
+    font-size: 0.9em;
+    padding: 10px;
+}
+
+.markdown code {
+    background: #f6f8fa;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+    padding: 2px 4px;
+}
+
+.markdown a {
+    text-decoration: none;
+}
+
+.markdown a:hover {
+    text-decoration: underline;
+}
+
+.markdown table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.markdown th, .markdown td {
+    border: 1px solid;
+    padding: 8px;
+    text-align: left;
+}
+
+.markdown thead th {
+    background: #f0f0f0;
+    font-weight: bold;
+    color: #000;
+}
