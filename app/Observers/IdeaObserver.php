@@ -7,5 +7,8 @@ use App\Models\Idea;
 
 class IdeaObserver
 {
-    // Do nothing
+    public function deleting(Idea $idea)
+    {
+        $idea->meetings()->delete();
+    }
 }

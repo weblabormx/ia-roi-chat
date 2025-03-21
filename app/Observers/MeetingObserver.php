@@ -14,4 +14,9 @@ class MeetingObserver
             $meeting->idea->update(['analysis' => null]);
         }
     }
+
+    public function deleting(Meeting $meeting)
+    {
+        $meeting->messages()->delete();
+    }
 }

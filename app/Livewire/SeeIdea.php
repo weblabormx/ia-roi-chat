@@ -25,6 +25,12 @@ class SeeIdea extends Component
         return redirect('ideas/'.$this->idea->id.'/live_meeting');
     }
 
+    public function removeData()
+    {
+        $this->idea->delete();
+        return redirect('dashboard');
+    }
+
     public function render()
     {
         return view('livewire.see-idea');
