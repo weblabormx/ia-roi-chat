@@ -21,7 +21,7 @@ class GenerateAnalysis implements ShouldQueue
         $messages = [
             [
                 'role' => 'system',
-                'content' => Setting::getColumn('analysis_prompt')
+                'content' => Setting::getColumn('analysis_prompt')."\nRegresa el mensaje en el idioma ".$this->idea->language
             ]
         ];
 

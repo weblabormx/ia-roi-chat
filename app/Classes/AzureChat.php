@@ -29,7 +29,7 @@ class AzureChat
         $messages = [
             [
                 'role' => 'system',
-                'content' => Setting::getColumn('chat_prompt')
+                'content' => Setting::getColumn('chat_prompt')."\nRegresa el mensaje en el idioma ".$meeting->idea->language
             ]
         ];
 

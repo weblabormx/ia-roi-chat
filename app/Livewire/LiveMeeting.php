@@ -13,6 +13,17 @@ class LiveMeeting extends Component
     use WithFileUploads;
 
     public $idea, $meeting, $message, $audioFile;
+    private $defaultLocales = [
+        'Spanish' => 'es-MX',
+        'English' => 'en-US',
+        'French' => 'fr-FR',
+        'German' => 'de-DE',
+        'Italian' => 'it-IT',
+        'Portuguese' => 'pt-BR',
+        'Chinese' => 'zh-CN',
+        'Japanese' => 'ja-JP',
+        'Russian' => 'ru-RU',
+    ];
     public $rules = [
         'message' => 'required|min:1'
     ];
@@ -55,6 +66,8 @@ class LiveMeeting extends Component
         $audioContent = fopen($real_path, 'r');
 
         // Enviar la solicitud POST a la API de Azure Speech-to-Text
+        $lang = $this->idea->language;
+        $lang = $this->defaultLocales[$lang] ?? 'en-US';
         $response = Http::withHeaders([
             'Ocp-Apim-Subscription-Key' => $subscriptionKey,
             'Accept' => 'application/json',
@@ -62,7 +75,7 @@ class LiveMeeting extends Component
             'audio', $audioContent, 'audio.wav'
         )->post($endpoint, [
             'definition' => json_encode([
-                'locales' => ['en-US'],
+                'locales' => [$lang],
                 'profanityFilterMode' => 'Masked',
                 'channels' => [0, 1]
             ])

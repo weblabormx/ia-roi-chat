@@ -29,7 +29,7 @@ class FinishMeeting implements ShouldQueue
             ->toArray();
         $messages[] = [
             'role' => 'system',
-            'content' => Setting::getColumn('meeting_prompt')
+            'content' => Setting::getColumn('meeting_prompt')."\n Regresa el mensaje en el idioma ".$this->meeting->idea->language
         ];
 
         $response = $azure->callApi($messages);
