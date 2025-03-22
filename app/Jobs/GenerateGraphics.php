@@ -22,7 +22,7 @@ class GenerateGraphics implements ShouldQueue
         $messages = [
             [
                 'role' => 'system',
-                'content' => Setting::getColumn('graphics_prompt')
+                'content' => Setting::getColumn('graphics_prompt')."\n Regresa los textos en el idioma ".$this->idea->language
             ],
             [
                 'role' => 'user',

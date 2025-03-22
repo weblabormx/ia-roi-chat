@@ -18,18 +18,22 @@ class GenerateAnalysis implements ShouldQueue
     {
         $azure = new AzureChat;
 
-        $messages = $this->idea->meetings()
+        $messages = [
+            [
+                'role' => 'system',
+                'content' => Setting::getColumn('analysis_prompt')."\nRegresa el mensaje en el idioma ".$this->idea->language
+            ]
+        ];
+
+        $messages = array_merge($messages, $this->idea->meetings()
             ->orderBy('created_at')
             ->get()
             ->map(fn($idea) => [
                 'role' => 'user',
                 'content' => $idea->resume
             ])
-            ->toArray();
-        $messages[] = [
-            'role' => 'system',
-            'content' => Setting::getColumn('analysis_prompt')
-        ];
+            ->toArray()
+        );
 
         $response = $azure->callApi($messages);
         $response = $response->json('choices.0.message.content') ?? null;
