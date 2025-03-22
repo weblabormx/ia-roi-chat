@@ -5,6 +5,8 @@ namespace App\Livewire;
 use App\Jobs\GenerateAnalysis;
 use App\Models\Idea;
 use Livewire\Component;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
 
 class SeeIdea extends Component
 {
@@ -36,6 +38,18 @@ class SeeIdea extends Component
         $this->idea->delete();
         return redirect('dashboard');
     }
+
+    public function exportPdf()
+    {
+        $html = Str::markdown($this->idea->analysis); // Convierte Markdown a HTML
+        $pdf = Pdf::loadView('empty', ['html' => $html]);
+
+        return response()->streamDownload(
+            fn () => print($pdf->output()),
+            "documento.pdf"
+        );
+    }
+
 
     public function render()
     {
