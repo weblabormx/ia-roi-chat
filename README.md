@@ -20,7 +20,8 @@ This project is a **Return on Investment (ROI) Calculator** powered by AI, built
 Try the live demo: [ROI Calculator](https://roi.wbor.dev/)
 
 ## Video
-Watch on [Youtube](https://youtu.be/xM-PLsbxphk)
+Watch the video on English on [Youtube](https://youtu.be/xM-PLsbxphk)
+Watch the video on Sánish on [Youtube](https://youtu.be/PbBNQwrHHzo)
 
 ## Installation
 1. Clone the repository:
