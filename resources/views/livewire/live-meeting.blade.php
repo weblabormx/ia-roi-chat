@@ -2,7 +2,7 @@
     <div id="messagesContainer" class="space-y-4 overflow-y-auto overflow-x-hidden pr-4" style="height: calc(100vh - 280px)" wire:poll>
         @foreach($meeting->messages()->get() as $message)
             @if($message->role == 'user')
-                <div class="bg-gray-500 p-4 my-4 rounded-lg">
+                <div class="bg-gray-200 dark:bg-gray-500 p-4 my-4 rounded-lg">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
@@ -33,7 +33,7 @@
     </div>
     @if(!$meeting->is_finished)
         <div class="absolute" style="bottom: 0; left:0; right: 0">
-            <form wire:submit="sendMessage" class="space-y-4 bg-gray-700 p-8 "> 
+            <form wire:submit="sendMessage" class="space-y-4 bg-gray-300 dark:bg-gray-700 p-8 "> 
                 <div class="flex">
                     <div class="flex items-center justify-center space-x-4 mt-5 mr-2 cursor-pointer">
                         <button id="recordButton" class="bg-red-500 text-white px-4 py-2 rounded-lg" type="button">

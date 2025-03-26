@@ -5,7 +5,7 @@
         <x-button green label="Go to open meeting" href="/ideas/{{ $idea->id }}/live_meeting" class="float-right" />
     @endif
     <h2 class="text-lg mb-4">Meetings</h2>
-    <div class="px-4 sm:px-6 lg:px-8 bg-white">
+    <div class="px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-white">
         <div class="flow-root">
             <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -41,7 +41,7 @@
         <x-button gray label="Download Analysis" wire:click="exportPdf" class="float-right mt-3" />
     @endisset
     <h2 class="text-lg mt-4 mb-2">Analysis</h2>
-    <small class="mb-4 block text-gray-300 text-xs">The generated ROI analysis is performed by AI and may not accurately reflect real results. It is recommended to verify and complement it with additional analysis or expert advice.</small>
+    <small class="mb-4 block text-gray-500 dark:text-gray-300 text-xs">The generated ROI analysis is performed by AI and may not accurately reflect real results. It is recommended to verify and complement it with additional analysis or expert advice.</small>
     <div class="bg-gray-100 px-12 text-black p-4">
         @isset($idea->graphics)
             {!! $idea->graphics !!}
