@@ -9,7 +9,7 @@
     <div class="space-y-4 pr-4" >
         @foreach($meeting->messages()->get() as $message)
             @if($message->role == 'user')
-                <div class="bg-gray-500 p-4 my-4 rounded-lg">
+                <div class="bg-gray-200 dark:bg-gray-500 p-4 my-4 rounded-lg">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
